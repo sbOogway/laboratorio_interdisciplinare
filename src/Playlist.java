@@ -7,12 +7,14 @@
  */
 package src;
 
+import java.util.ArrayList;
 
 public class Playlist {
 
     // CAMPI
 
     public String nome = "";
+    public ArrayList<Song> content = new ArrayList<Song>();
 
 	// COSTRUTTORE
 	
@@ -23,7 +25,11 @@ public class Playlist {
     }
 
     public void addSong(Song brano) {
-
+        content.add(brano);
+    }
+    
+    public void removeSong(Song brano) {
+        content.remove(brano);
     }
 
 }

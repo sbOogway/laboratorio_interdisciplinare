@@ -19,6 +19,15 @@ public class Utente {
 	//CAMPI
 	public String nome_utente = "";
 	public String password = "";
+	public String cf;
+	public String nome;
+	public String cognome;
+	public String via;
+	public String numero_civico;
+	public String cap;
+	public String comune;
+	public String provincia;
+	public String email; 
 	public static ArrayList<Utente> all_users = new ArrayList<Utente>();	
 	
 	// COSTRUTTORE
@@ -38,7 +47,7 @@ public class Utente {
 				Utente user = new Utente(info[0], info[1]);
 				all_users.add(user);
 			}
-			//System.out.println(all_songs);
+			// System.out.println(all_users);
 		}
 		catch (IOException ex){
 			ex.printStackTrace();
