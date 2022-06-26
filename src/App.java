@@ -22,17 +22,14 @@ public class App {
 		// LOADING
 		System.out.println("LOADING");
 		System.out.print("##############################");
-		// POPOLARE Song.all_songs 
-		Song.CSVReader();
+		// POPOLARE Song.all_songs
+		Song.CSVReader_song();
 		System.out.print("##############################");
 		// POPOLARE Utente.all_users
 		Utente.CSVReader();
 		System.out.print("#############################");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		// POPOLARE Song.all_songs_emo
+		Song.CSVReader_emo();
 		System.out.println("##########################");
 		
 		ArrayList<Playlist> my_playlists = new ArrayList<Playlist>();
@@ -47,7 +44,7 @@ public class App {
 
 			// FINE MAIN MENU
 			
-			// VISUALIZZARE EMOZIONI (LOGIN NON NECESSARIO
+			// VISUALIZZARE EMOZIONI (LOGIN NON NECESSARIO)
 			if (mode.equals("0"))
 			{			
 				System.out.print("Immetti il nome, artista o anno della canzone che vuoi cercare: ");
@@ -80,6 +77,31 @@ public class App {
 
 			}
 
+			// LOGIN 
+			if (mode.equals("4"))
+			{
+				login();		
+
+			}
+
+			// LOGOUT
+			if (mode.equals("logout")){
+
+				if (login_status.equals("NOT LOGGED IN")){
+					System.out.println("###################################################################################################################");
+					System.out.println("Nessun account connesso.");
+					System.out.println("###################################################################################################################");
+					continue;
+				}	
+
+				System.out.println("###################################################################################################################");
+				System.out.println("Disconnesso da " + login_status + ".");
+				System.out.println("###################################################################################################################");
+				login_status = "NOT LOGGED IN";
+				logged_in = false;
+
+			}	
+
 			// USCIRE DALL' APPLICAZIONE
 			if (mode.equals("exit")){
 				System.out.println("###################################################################################################################");
@@ -91,19 +113,20 @@ public class App {
 
 	public static void menu_avvio() {
 		System.out.println(
-				"                                                   _ \r\n" + 
-				" _____      ____ _  __ _ ___  ___  _   _ _ __   __| |\r\n" + 
-				"/ __\\ \\ /\\ / / _ `|/ _` / __|/ _ \\| | | | '_ \\ / _` |\r\n" + 
-				"\\__ \\\\ V  V / (_| | (|  \\__ \\ (_) | |_| | | | | (_| |\r\n" + 
-				"|___/ \\_/\\_/ \\__,_|\\__, |___/\\___/ \\__,_|_| |_|\\__,_|\r\n" + 
-				"                   |___/                                 \n");
-		System.out.print("Benvenuto su $WAGSOUND!!! :}\n");
+				"                                                                                  _ \r\n" + 
+				"                                _____      ____ _  __ _ ___  ___  _   _ _ __   __| |\r\n" + 
+				"                               / __\\ \\ /\\ / / _ `|/ _` / __|/ _ \\| | | | '_ \\ / _` |\r\n" + 
+				"                               \\__ \\\\ V  V / (_| | (|  \\__ \\ (_) | |_| | | | | (_| |\r\n" + 
+				"                               |___/ \\_/\\_/ \\__,_|\\__, |___/\\___/ \\__,_|_| |_|\\__,_|\r\n" + 
+				"                                                  |___/                                 \n");
+		System.out.println("###################################################################################################################");
+		System.out.print("Benvenuto su $WAGSOUND!!! :}" + "\n");
 
 	}
 				
 	public static void menu() {
 		Scanner inp0 = new Scanner(System.in);		
-		System.out.println("Cosa vuoi fare?" + padLeft("Login status: " + login_status, 100) + "\n0. Ricerca le emozioni di un brano musicale. \n1. Registrati all'applicazione.\n2. Crea una nuova playlist. \n3. Inserisci emozione per canzone della playlist. " + padLeft("Per uscire dall'app digita 'exit'", 65));		
+		System.out.println("Cosa vuoi fare?" + padLeft("Login: " + login_status, 100) + "\n0. Ricerca le emozioni di un brano musicale. \n1. Registrati all'applicazione.\n2. Crea una nuova playlist. \n3. Inserisci emozione per canzone della playlist.\n4. Effettua il login. " + padLeft("Altri comandi: 'exit', 'logout'.", 93));		
 		mode = inp0.next();
 
 	} 
@@ -130,7 +153,7 @@ public class App {
 	public static void cercaBranoMusicale(String query) {			
 		System.out.println("###################################################################################################################");
 		int count = 0;	
-		for (Song song : Song.all_songs) {			
+		for (Song song : Song.all_songs_emo) {			
 			if (song.titolo.contains(query) || song.autore.contains(query) || song.anno.contains(query)) {
 				System.out.println(count + ". " +  song.autore + " - " + song.titolo + " - " + song.anno);
 			}
@@ -188,7 +211,11 @@ public class App {
 			System.out.println("Le due password non corrispondono.");
 		}
 		Utente new_user = new Utente(nome_utente, password);
-		System.out.println(new_user);
+		Utente.CSVWriter("\n" + nome_utente + "-" + password);
+		System.out.println("###################################################################################################################");
+		System.out.println("Nuovo utente registrato: " + nome_utente + " !!! ;)");
+		System.out.println("###################################################################################################################");
+		Utente.CSVReader();
 	}
 
 	public static void RegistraPlaylist(){
@@ -196,6 +223,29 @@ public class App {
 		System.out.print("Nome della nuova playlist: ");
 		String nome = inp3.nextLine();
 		Playlist playlist = new Playlist(nome);
+		ArrayList<Song> all_songs_copy = Song.all_songs;		
+		int index = 0;
+		String playlist_songs = "";
+		while (index != -1) {
+			int count = 0;
+			System.out.println("###################################################################################################################");
+			for (Song brano : all_songs_copy){
+				System.out.println(count + ". " + brano.autore + " - " + brano.titolo + " - " + brano.anno);
+				count += 1;
+			}
+			System.out.println("###################################################################################################################");
+			System.out.print("Digita il numero della canzone che vuoi inserire (Digita '-1' quando hai finito): ");
+			index = inp3.nextInt();
+			if (index == -1){
+				continue;
+			}
+			playlist.addSong(all_songs_copy.get(index));
+			playlist_songs += all_songs_copy.get(index).autore + ":" + all_songs_copy.get(index).titolo + ":" + all_songs_copy.get(index).anno + ", " ;
+			all_songs_copy.remove(index);
+		} 
+		Playlist.CSVWriter("\n"+login_status+ "-" + playlist.nome + "-" + playlist_songs );
+		System.out.println("La playlist " + playlist.nome + " e' stata creata!!! ;)");
+		System.out.println("###################################################################################################################");
 		
 	}
 	

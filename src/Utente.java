@@ -1,7 +1,9 @@
 package src;
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -54,23 +56,15 @@ public class Utente {
 		}
 		return all_users;
 
-		/*
-		try(Scanner scanner = new Scanner(Paths.get("data/canzoni.csv").toFile())){
-			
-			String DELIMITER = ",";
-			scanner.useDelimiter(DELIMITER);
-			while (scanner.hasNext()) {
-				System.out.println(scanner.next());
-				Song canzone = new Song(scanner.next());
-				all_songs.add(canzone);
-				System.out.println(all_songs + "############################################");
-				}
-			
-			}
-			
-		 catch (IOException ex) {
-			ex.printStackTrace();
-		 }
-		return all_songs; */
 	} 
+
+	public static void CSVWriter(String content) {
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter("data/utenti.csv", true))){
+			writer.append(content);			
+			
+		}
+		catch (IOException ex){
+			ex.printStackTrace();
+		}
+	}	
 }

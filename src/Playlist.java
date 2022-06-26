@@ -7,6 +7,9 @@
  */
 package src;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Playlist {
@@ -19,9 +22,7 @@ public class Playlist {
 	// COSTRUTTORE
 	
     public Playlist(String nome) {
-
         this.nome = nome;    	
-        System.out.println("La Playlist " + nome + " e stata creata!!! ;)");
     }
 
     public void addSong(Song brano) {
@@ -31,6 +32,16 @@ public class Playlist {
     public void removeSong(Song brano) {
         content.remove(brano);
     }
+
+    public static void CSVWriter(String content) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("data/playlist.csv", true))){
+			writer.append(content);			
+			
+		}
+		catch (IOException ex){
+			ex.printStackTrace();
+		}
+    } 
 
 }
 

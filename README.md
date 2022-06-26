@@ -8,3 +8,9 @@ PROBLEMI DA RISOLVERE:
 
 1. Fare in modo che in visualizzaEmozioni non ci siano duplicati.
 2. Trovare un modo per reinserire i dati in caso di errore da parte dell'utente nella fase di registrazione.
+3. gestire gli errori di input.
+4. colorare output a schermo.
+
+COSE DA FARE
+
+1. 3. Inserisci emozione per canzone della playlist (da iniziare completamente)
