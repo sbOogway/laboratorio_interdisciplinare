@@ -13,4 +13,4 @@ PROBLEMI DA RISOLVERE:
 
 COSE DA FARE
 
-1. 3. Inserisci emozione per canzone della playlist (da iniziare completamente)
+1. Inserisci emozione per canzone della playlist (da iniziare completamente)
